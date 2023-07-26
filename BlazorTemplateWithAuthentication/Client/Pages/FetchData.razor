@@ -1,0 +1,11 @@
+﻿@page "/fetchdata"
+@using Microsoft.AspNetCore.Authorization;
+@attribute [Authorize]
+
+<h1>
+    <AuthorizeView>
+        <Authorized>
+            @context.User.Identity.Name
+        </Authorized>
+    </AuthorizeView>
+</h1>

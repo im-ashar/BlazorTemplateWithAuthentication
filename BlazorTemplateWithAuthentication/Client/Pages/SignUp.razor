@@ -1,0 +1,81 @@
+﻿@page "/signup"
+@using shared=BlazorTemplateWithAuthentication.Shared;
+@inject IAuthService AuthService
+@inject NavigationManager NavigationManager
+
+<h1>Register</h1>
+
+@if (ShowErrors)
+{
+    <div class="alert alert-danger" role="alert">
+        @foreach (var error in Errors!)
+        {
+            <p>@error</p>
+        }
+    </div>
+}
+
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">Please enter your details</h5>
+        <EditForm Model="signUpModel" OnValidSubmit="HandleRegistration">
+            <DataAnnotationsValidator />
+
+            <div class="form-group m-2">
+                <label for="email">Email address</label>
+                <InputText Id="email" class="form-control" @bind-Value="signUpModel.Email" />
+                <ValidationMessage For="@(() => signUpModel.Email)" />
+            </div>
+            <div class="form-group m-2">
+                <label for="password">Password</label>
+                <InputText id="password" type="password" class="form-control" @bind-Value="signUpModel.Password" />
+                <ValidationMessage For="@(() => signUpModel.Password)" />
+            </div>
+            <div class="form-group m-2">
+                <label for="confirmPassword">Confirm Password</label>
+                <InputText id="confirmPassword" type="password" class="form-control" @bind-Value="signUpModel.ConfirmPassword" />
+                <ValidationMessage For="@(() => signUpModel.ConfirmPassword)" />
+            </div>
+            <div class="form-group m-2">
+                <button type="submit" class="btn btn-primary">Submit</button>
+                <div class="spinner-border @loader" style="vertical-align:middle;" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            </div>
+        </EditForm>
+    </div>
+</div>
+
+@code {
+
+    private shared.SignUp signUpModel = new shared.SignUp();
+    private bool ShowErrors;
+    private IEnumerable<string>? Errors;
+    private string loader = "d-none";
+
+
+    private async Task HandleRegistration()
+    {
+        ShowErrors = false;
+
+        bool isRunning = true;
+        if (isRunning)
+        {
+            loader = "";
+        }
+
+        var result = await AuthService.SignUp(signUpModel);
+        isRunning = false;
+        loader = "d-none";
+        if (result.Successful)
+        {
+            NavigationManager.NavigateTo("/login");
+        }
+        else
+        {
+            Errors = result.Errors;
+            ShowErrors = true;
+        }
+    }
+
+}

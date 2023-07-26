@@ -1,0 +1,31 @@
+﻿@inject IAuthService AuthService
+@inject NavigationManager NavigationManager
+<AuthorizeView>
+    <Authorized>
+        <div class="nav-item">
+            <NavLink class="nav-link" href="#" @onclick="Logout">
+                <span class="btn" aria-hidden="true"></span> Logout
+            </NavLink>
+        </div>
+
+    </Authorized>
+    <NotAuthorized>
+        <div class="nav-item">
+            <NavLink class="nav-link" href="/login">
+                <span class="oi oi-plus" aria-hidden="true"></span> Login
+            </NavLink>
+        </div>
+
+        <div class="nav-item">
+            <NavLink class="nav-link" href="/signup">
+                <span class="oi oi-plus" aria-hidden="true"></span> SignUp
+            </NavLink>
+        </div>
+    </NotAuthorized>
+</AuthorizeView>
+@code {
+    private async Task Logout()
+    {
+        await AuthService.Logout();
+    }
+}
