@@ -51,7 +51,7 @@ namespace BlazorTemplateWithAuthentication.Client.Authentication
             }
 
             await _localStorage.SetItemAsync("authToken", loginResult.Token);
-            ((CustomAuthenticationStateProvider)_authenticationStateProvider).MarkUserAsAuthenticated(model.Email!);
+            ((CustomAuthenticationStateProvider)_authenticationStateProvider).MarkUserAsAuthenticated(loginResult.Token);
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", loginResult.Token);
 
             return loginResult;

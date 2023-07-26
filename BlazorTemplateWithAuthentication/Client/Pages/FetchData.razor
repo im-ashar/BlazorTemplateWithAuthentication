@@ -9,3 +9,12 @@
         </Authorized>
     </AuthorizeView>
 </h1>
+
+<h5>
+    <AuthorizeView Roles="Admin">
+        Hello <strong>@context.User.Identity.Name</strong> You Are Admin.
+    </AuthorizeView>
+    <AuthorizeView Roles="User">
+        Hello <strong>@context.User.Identity.Name</strong> You Are User.
+    </AuthorizeView>
+</h5>

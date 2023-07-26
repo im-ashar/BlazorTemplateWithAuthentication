@@ -71,9 +71,19 @@ namespace BlazorTemplateWithAuthentication.Client.Helpers
             }
             return Convert.FromBase64String(base64);
         }
-        public void MarkUserAsAuthenticated(string email)
+
+        //use when we dont have roles in API
+        /*public void MarkUserAsAuthenticated(string email)
         {
             var authenticatedUser = new ClaimsPrincipal(new ClaimsIdentity(new[] { new Claim(ClaimTypes.Name, email) }, "apiauth"));
+            var authState = Task.FromResult(new AuthenticationState(authenticatedUser));
+            NotifyAuthenticationStateChanged(authState);
+        }*/
+
+        //use when we have have Roles in API 
+        public void MarkUserAsAuthenticated(string token)
+        {
+            var authenticatedUser = new ClaimsPrincipal(new ClaimsIdentity(ParseClaimsFromJwt(token), "jwt"));
             var authState = Task.FromResult(new AuthenticationState(authenticatedUser));
             NotifyAuthenticationStateChanged(authState);
         }
